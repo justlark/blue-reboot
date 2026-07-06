@@ -9,7 +9,7 @@ cp --archive --verbose --force /ctx/system/. /
 dnf5 --assumeyes remove fedora-flathub-remote fedora-third-party gnome-software-rpm-ostree firefox firefox-langpacks 
 
 # Add the Flathub flatpakref to the image.
-mkdir -p /etc/flatpak/remotes.d/
+mkdir --parents /etc/flatpak/remotes.d/
 curl --retry 3 --location --output /etc/flatpak/remotes.d/flathub.flatpakrepo https://dl.flathub.org/repo/flathub.flatpakrepo
 
 # Fedora ships with a service which adds the Fedora Flatpak remote on boot. We
