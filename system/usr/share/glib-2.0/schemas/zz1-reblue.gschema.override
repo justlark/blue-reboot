@@ -1,5 +1,6 @@
 [org.gnome.software]
 packaging-format-preference=['flatpak', 'rpm']
+enable-repos-dialog=false
 
 [org.gnome.desktop.app-folders]
 folder-children=@as []

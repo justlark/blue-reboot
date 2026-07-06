@@ -6,7 +6,7 @@ set -ouex pipefail
 cp --archive --verbose --force /ctx/system/. /
 
 # Remove packages from the base image.
-dnf5 --assumeyes remove fedora-flathub-remote fedora-third-party gnome-software-rpm-ostree firefox firefox-langpacks 
+dnf5 --assumeyes remove fedora-flathub-remote fedora-third-party firefox firefox-langpacks 
 
 # Add the Flathub flatpakref to the image.
 mkdir --parents /etc/flatpak/remotes.d/
