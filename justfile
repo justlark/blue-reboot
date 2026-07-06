@@ -61,10 +61,11 @@ build: build-image build-iso
 
 # tag the container image for pushing to the container registry
 tag-image:
-    ./scripts/exec.nu podman tag "{{ image_name }}:{{ default_tag }}" "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ default_tag }}"
-    ./scripts/exec.nu podman tag "{{ image_name }}:{{ default_tag }}" "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ git_rev }}"
+    ./scripts/exec.nu sudo podman tag "{{ image_name }}:{{ default_tag }}" "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ default_tag }}"
+    ./scripts/exec.nu sudo podman tag "{{ image_name }}:{{ default_tag }}" "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ git_rev }}"
 
 # push the container image to the container registry
 push-image:
+    mkdir ./output/
     ./scripts/exec.nu sudo podman push "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ default_tag }}"
     ./scripts/exec.nu sudo podman push --digestfile ./output/digest "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ git_rev }}"
