@@ -6,6 +6,7 @@ After=network-online.target
 
 [Service]
 Type=oneshot
+RemainAfterExit=yes
 ExecStart=/usr/bin/flatpak install --system --noninteractive flathub org.mozilla.firefox org.gnome.Loupe org.gnome.Papers org.gnome.Decibels org.gnome.Showtime org.gnome.clocks org.gnome.TextEditor org.gnome.Calculator org.gnome.Snapshot 
 ExecStart=/usr/bin/touch /var/lib/flatpak/.reblue-installed
 
