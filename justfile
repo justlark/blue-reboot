@@ -24,7 +24,7 @@ build-image:
       --label "org.opencontainers.image.description={{ image_desc }}" \
       --label "org.opencontainers.image.documentation=https://raw.githubusercontent.com/{{ repo_org }}/{{ repo_name }}/{{ git_rev }}/README.md" \
       --label "org.opencontainers.image.url=https://github.com/{{ repo_org }}/{{ repo_name }}/tree/{{ git_rev }}" \
-      --label "org.opencontainers.image.source=https://github.com/{{ repo_org }}/{{ repo_name }}/blob/{{ git_rev }}/Containerfile" \
+      --label "org.opencontainers.image.source=https://github.com/{{ repo_org }}/{{ repo_name }}" \
       --label "org.opencontainers.image.revision={{ git_rev }}" \
       --label "org.opencontainers.image.created={{ datetime }}" \
       --label "org.opencontainers.image.base.name={{ base_image }}:{{ base_tag }}" \
