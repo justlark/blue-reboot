@@ -15,3 +15,7 @@ curl --retry 3 --location --output /etc/flatpak/remotes.d/flathub.flatpakrepo ht
 # Fedora ships with a service which adds the Fedora Flatpak remote on boot. We
 # replace it with one that adds the Flathub remote instead.
 rm --force /usr/lib/systemd/system/flatpak-add-fedora-repos.service
+
+# On first boot, replace the Fedora Flatpak remote with the Flathub remote and
+# install default flatpaks.
+systemctl enable flatpak-add-flathub-repos.service flatpak-preinstall.service
