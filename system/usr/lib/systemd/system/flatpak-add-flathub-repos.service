@@ -1,15 +1,27 @@
 [Unit]
-Description=Add Flathub flatpak remote.
+Description=Add Flathub flatpak remote
 ConditionPathExists=!/var/lib/flatpak/.reblue-initialized
 Before=flatpak-system-helper.service
+Before=flatpak-preinstall.service
+Before=flatpak-add-fedora-repos.service
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
+
+# Add the Flathub remote.
 ExecStart=/usr/bin/flatpak remote-add --system --if-not-exists flathub /etc/flatpak/remotes.d/flathub.flatpakrepo
-ExecStart=/usr/bin/flatpak remote-add --system --if-not-exists --disable fedora oci+https://registry.fedoraproject.org
-ExecStart=/usr/bin/flatpak remote-add --system --if-not-exists --disable fedora-testing oci+https://registry.fedoraproject.org#testing
-ExecStartPost=/usr/bin/touch /var/lib/flatpak/.reblue-initialized
+
+# Remove the Fedora remote.
+ExecStart=/usr/bin/flatpak remote-delete --system fedora
+ExecStart=/usr/bin/flatpak remote-delete --system fedora-testing
+
+# Ensure that this service only runs once and the upstream service which
+# normally adds the Fedora remote never runs to begin with.
+ExecStart=/usr/bin/touch /var/lib/flatpak/.reblue-initialized /var/lib/flatpak/.fedora-initialized
+
+# The Flatpak CLI will fail if the remote doesn't exist.
+SuccessExitStatus=1
 
 [Install]
 WantedBy=multi-user.target
