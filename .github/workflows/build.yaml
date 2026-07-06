@@ -44,9 +44,13 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
-        # Because we need root to build the image, we need to log into the
-        # registry as root as well.
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | sudo podman login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: |
+          # Because we need root to build the image, we need to log into the
+          # registry as root.
+          echo "${{ secrets.GITHUB_TOKEN }}" | sudo podman login ghcr.io -u ${{ github.actor }} --password-stdin
+          # We also need to log in as our unprivileged user so that we can push
+          # the signature.
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Push to GitHub Container Registry
         id: push-image
