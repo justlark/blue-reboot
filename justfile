@@ -52,7 +52,7 @@ build-iso:
       --type iso \
       --use-librepo=True \
       --rootfs=btrfs \
-      "{{ image_name }}:{{ default_tag }}"
+      "localhost/{{ image_name }}:{{ default_tag }}"
 
     ./scripts/exec.nu sudo chown --recursive "{{ user }}:{{ user }}" ./output/
 

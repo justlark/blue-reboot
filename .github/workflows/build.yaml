@@ -37,7 +37,7 @@ jobs:
         run: cargo binstall nu
 
       - name: Build image
-        run: sudo env "PATH=$PATH" $(command -v just) build
+        run: sudo env "PATH=$PATH" $(command -v just) build-image
 
       - name: "Tag image"
         run: just tag-image
