@@ -3,7 +3,6 @@ set shell := ["nu", "-c"]
 repo_org := "justlark"
 repo_name := "blue-reboot"
 image_name := "blue-reboot"
-local_image_name := "localhost/" + image_name
 default_tag := "latest"
 base_image := "quay.io/fedora/fedora-silverblue"
 base_tag := "latest"
@@ -19,7 +18,7 @@ default:
     @just --list
 
 # build a container image locally using podman
-build-image $tag=default_tag:
+build-image:
     ./scripts/exec.nu sudo podman build \
       --label "org.opencontainers.image.title={{ image_title }}" \
       --label "org.opencontainers.image.description={{ image_desc }}" \
@@ -30,12 +29,12 @@ build-image $tag=default_tag:
       --label "org.opencontainers.image.created={{ datetime }}" \
       --label "org.opencontainers.image.base.name={{ base_image }}:{{ base_tag }}" \
       --pull=newer \
-      --tag "{{ image_name }}:{{ tag }}" \
+      --tag "{{ image_name }}:{{ default_tag }}" \
       --file Containerfile \
       .
 
 # convert a container image to a bootc ISO image
-build-iso $target_image=local_image_name $tag=default_tag:
+build-iso:
     mkdir ./output/
 
     ./scripts/exec.nu sudo podman run \
@@ -53,9 +52,19 @@ build-iso $target_image=local_image_name $tag=default_tag:
       --type iso \
       --use-librepo=True \
       --rootfs=btrfs \
-      "{{ target_image }}:{{ tag }}"
+      "{{ image_name }}:{{ default_tag }}"
 
     ./scripts/exec.nu sudo chown --recursive "{{ user }}:{{ user }}" ./output/
 
 # build a bootc ISO image
-build $target_image=local_image_name $tag=default_tag: (build-image tag) (build-iso target_image tag)
+build: build-image build-iso
+
+# tag the container image for pushing to the container registry
+tag-image:
+    ./scripts/exec.nu podman tag "{{ image_name }}:{{ default_tag }}" "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ default_tag }}"
+    ./scripts/exec.nu podman tag "{{ image_name }}:{{ default_tag }}" "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ git_rev }}"
+
+# push the container image to the container registry
+push-image:
+    ./scripts/exec.nu sudo podman push "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ default_tag }}"
+    ./scripts/exec.nu sudo podman push --digestfile ./output/digest "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ git_rev }}"
