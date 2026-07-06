@@ -20,7 +20,7 @@ default:
 
 # build a container image locally using podman
 build-image $tag=default_tag:
-    ./scripts/podman.nu build \
+    ./scripts/exec.nu sudo podman build \
       --label "org.opencontainers.image.title={{ image_title }}" \
       --label "org.opencontainers.image.description={{ image_desc }}" \
       --label "org.opencontainers.image.documentation=https://raw.githubusercontent.com/{{ repo_org }}/{{ repo_name }}/{{ git_rev }}/README.md" \
@@ -38,7 +38,7 @@ build-image $tag=default_tag:
 build-iso $target_image=local_image_name $tag=default_tag:
     mkdir ./output/
 
-    ./scripts/podman.nu run \
+    ./scripts/exec.nu sudo podman run \
       --rm \
       --interactive \
       --tty \
@@ -55,7 +55,7 @@ build-iso $target_image=local_image_name $tag=default_tag:
       --rootfs=btrfs \
       "{{ target_image }}:{{ tag }}"
 
-    sudo chown --recursive "{{ user }}:{{ user }}" ./output/
+    ./scripts/exec.nu sudo chown --recursive "{{ user }}:{{ user }}" ./output/
 
 # build a bootc ISO image
 build $target_image=local_image_name $tag=default_tag: (build-image tag) (build-iso target_image tag)
