@@ -38,6 +38,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: "Free runner disk space"
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be
+
       - name: "Install cargo-binstall"
         run: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 
