@@ -8,7 +8,8 @@ base_image := "quay.io/fedora/fedora-silverblue"
 base_tag := "latest"
 image_title := "Blue Reboot"
 image_desc := "A bootc OS image which tweaks Fedora Silverblue"
-git_rev := `git rev-parse --short=8 HEAD`
+git_rev_long := `git rev-parse HEAD`
+git_rev_short := `git rev-parse --short=8 HEAD`
 datetime := `date now | date to-timezone UTC | format date "%Y-%m-%dT%H:%M:%SZ"`
 
 [private]
@@ -22,11 +23,11 @@ build-image:
     let metadata = {
       "org.opencontainers.image.title": "{{ image_title }}",
       "org.opencontainers.image.description": "{{ image_desc }}",
-      "org.opencontainers.image.documentation": "https://raw.githubusercontent.com/{{ repo_org }}/{{ repo_name }}/{{ git_rev }}/README.md",
-      "org.opencontainers.image.url": "https://github.com/{{ repo_org }}/{{ repo_name }}/tree/{{ git_rev }}",
+      "org.opencontainers.image.documentation": "https://raw.githubusercontent.com/{{ repo_org }}/{{ repo_name }}/{{ git_rev_long }}/README.md",
+      "org.opencontainers.image.url": "https://github.com/{{ repo_org }}/{{ repo_name }}/tree/{{ git_rev_long }}",
       "org.opencontainers.image.source": "https://github.com/{{ repo_org }}/{{ repo_name }}",
       "org.opencontainers.image.version": (podman run --rm quay.io/skopeo/stable:latest inspect docker://{{ base_image }}:{{ base_tag }} | from json | get "Labels" | get "org.opencontainers.image.version"),
-      "org.opencontainers.image.revision": "{{ git_rev }}",
+      "org.opencontainers.image.revision": "{{ git_rev_long }}",
       "org.opencontainers.image.created": "{{ datetime }}",
       "org.opencontainers.image.base.name": "{{ base_image }}:{{ base_tag }}",
     }
@@ -57,7 +58,7 @@ tag-image:
     #!/usr/bin/env nu
 
     ./scripts/exec.nu sudo podman tag "{{ image_name }}:{{ default_tag }}" "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ default_tag }}"
-    ./scripts/exec.nu sudo podman tag "{{ image_name }}:{{ default_tag }}" "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ git_rev }}"
+    ./scripts/exec.nu sudo podman tag "{{ image_name }}:{{ default_tag }}" "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ git_rev_short }}"
 
 # push the container image to the container registry
 push-image:
@@ -66,4 +67,4 @@ push-image:
     mkdir ./output/
 
     ./scripts/exec.nu sudo podman push "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ default_tag }}"
-    ./scripts/exec.nu sudo podman push --digestfile ./output/digest "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ git_rev }}"
+    ./scripts/exec.nu sudo podman push --digestfile ./output/digest "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ git_rev_short }}"
