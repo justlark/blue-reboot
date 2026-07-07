@@ -57,8 +57,11 @@ build: build-image build-iso
 tag-image:
     #!/usr/bin/env nu
 
+    let version = podman inspect "{{ image_name }}:{{ default_tag }}" | from json | get 0 | get "Labels" | get "org.opencontainers.image.version"
+
     ./scripts/exec.nu sudo podman tag "{{ image_name }}:{{ default_tag }}" "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ default_tag }}"
     ./scripts/exec.nu sudo podman tag "{{ image_name }}:{{ default_tag }}" "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ git_rev_short }}"
+    ./scripts/exec.nu sudo podman tag "{{ image_name }}:{{ default_tag }}" $"ghcr.io/{{ repo_org }}/{{ image_name }}:($version)"
 
 # push the container image to the container registry
 push-image:
@@ -66,5 +69,8 @@ push-image:
 
     mkdir ./output/
 
-    ./scripts/exec.nu sudo podman push "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ default_tag }}"
-    ./scripts/exec.nu sudo podman push --digestfile ./output/digest "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ git_rev_short }}"
+    let version = podman inspect "{{ image_name }}:{{ default_tag }}" | from json | get 0 | get "Labels" | get "org.opencontainers.image.version"
+
+    ./scripts/exec.nu sudo podman push --digestfile ./output/digest "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ default_tag }}"
+    ./scripts/exec.nu sudo podman push "ghcr.io/{{ repo_org }}/{{ image_name }}:{{ git_rev_short }}"
+    ./scripts/exec.nu sudo podman push  $"ghcr.io/{{ repo_org }}/{{ image_name }}:($version)"
