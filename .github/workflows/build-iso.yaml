@@ -1,10 +1,15 @@
 name: Build ISO image
 
 on:
+  schedule:
+    # Weekly on Monday at midnight UTC.
+    #
+    # The ISO image doesn't need to be kept fully up to date with the container
+    # image, because the user can simply update once their installation is
+    # online. Building the ISO image consumes a lot of CI minutes, so we want
+    # to avoid triggering it more often than necessary.
+    - cron: "0 0 * * 1"
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Build container image"]
-    types: [completed]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
@@ -14,13 +19,6 @@ jobs:
   build_iso:
     name: Build and upload ISO
     runs-on: ubuntu-latest
-
-    # Only run when triggered by the daily image build job—not on every push to
-    # `main`.
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.event == 'schedule' &&
-       github.event.workflow_run.conclusion == 'success')
 
     permissions:
       contents: read
