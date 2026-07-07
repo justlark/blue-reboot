@@ -46,7 +46,7 @@ build-iso:
 
     mkdir ./output/
 
-    ./scripts/exec.nu sudo podman run --rm --interactive --tty --privileged --pull=newer --net=host --security-opt label=type:unconfined_t --volume $"(pwd)/config/iso.toml:/config.toml:ro" --volume $"(pwd)/output/:/output" --volume /var/lib/containers/storage:/var/lib/containers/storage quay.io/centos-bootc/bootc-image-builder:latest --type iso --use-librepo=True --rootfs=btrfs "localhost/{{ image_name }}:{{ default_tag }}"
+    ./scripts/exec.nu sudo podman run --rm --privileged --pull=newer --net=host --security-opt label=type:unconfined_t --volume $"(pwd)/config/iso.toml:/config.toml:ro" --volume $"(pwd)/output/:/output" --volume /var/lib/containers/storage:/var/lib/containers/storage quay.io/centos-bootc/bootc-image-builder:latest --type iso --use-librepo=True --rootfs=btrfs "localhost/{{ image_name }}:{{ default_tag }}"
 
     ./scripts/exec.nu sudo chown --recursive $"(whoami):(whoami)" ./output/
 
