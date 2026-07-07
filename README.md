@@ -1,6 +1,7 @@
 # Blue Reboot
 
-Blue Reboot is a bootc OS image derived from Fedora Silverblue.
+Blue Reboot is a bootc OS image derived from [Fedora
+Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/).
 
 ## About
 
@@ -13,6 +14,12 @@ Blue Reboot makes the following changes to the upstream image:
 
 This image is inspired by the [Universal Blue](https://universal-blue.org/)
 base images, but sticks closer to the upstream Fedora Atomic project.
+
+## Install
+
+You can download the installation `.iso` here:
+
+[blue-reboot.iso](https://bootc-images.lark.gay/blue-reboot.iso)
 
 ## Rebase
 
