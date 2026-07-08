@@ -59,5 +59,5 @@ downloading the [cosign.pub](./cosign.pub) file from this repo and running the
 following command:
 
 ```bash
-cosign verify --key cosign.pub ghcr.io/justlark/pup-os
+cosign verify --key cosign.pub ghcr.io/justlark/blue-reboot:latest
 ```
