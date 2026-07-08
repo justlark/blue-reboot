@@ -10,7 +10,15 @@ Blue Reboot makes the following changes to the upstream image:
 - Replace the Fedora Flatpak remote with the Flathub remote.
 - Make Flatpak the default package source over RPM in GNOME Software.
 - Replace the Firefox RPM package with the Flatpak.
-- Provide a different set of default apps.
+- Provide a different set of default Flatpak apps.
+  - Loupe (Image Viewer)
+  - Papers (Document Viewer)
+  - Showtime (Video Player)
+  - Decibels (Audio Player)
+  - Snapshot (Camera)
+  - Clocks
+  - Text Editor
+  - Calculator
 
 This image is inspired by the [Universal Blue](https://universal-blue.org/)
 base images, but sticks closer to the upstream Fedora Atomic project.
