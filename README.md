@@ -59,7 +59,12 @@ Reboot again to complete the installation
 systemctl reboot
 ```
 
-## Verification
+## Build
+
+Install [just](https://just.systems/man/en/installation.html) and run `just` in
+the repo to see a list of recipes.
+
+## Verify
 
 Blue Reboot images are signed with [Sigstore](https://www.sigstore.dev/)'s
 [cosign](https://github.com/sigstore/cosign). You can verify the signature by
