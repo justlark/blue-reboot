@@ -3,10 +3,15 @@ Description=Install default flatpaks
 ConditionPathExists=!/var/lib/flatpak/.reblue-installed
 Wants=network-online.target
 After=network-online.target
+# Keep retrying until the install succeeds. ISO installs track upstream Fedora
+# Silverblue, so the next boot may not include this service anymore.
+StartLimitIntervalSec=0
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
+Restart=on-failure
+RestartSec=30s
 ExecStart=/usr/bin/flatpak install --system --noninteractive flathub org.mozilla.firefox org.gnome.Loupe org.gnome.Papers org.gnome.Decibels org.gnome.Showtime org.gnome.clocks org.gnome.TextEditor org.gnome.Calculator org.gnome.Snapshot 
 ExecStart=/usr/bin/touch /var/lib/flatpak/.reblue-installed
 

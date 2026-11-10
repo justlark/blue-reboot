@@ -29,6 +29,18 @@ You can download the installation `.iso` here:
 
 [blue-reboot.iso](https://bootc-images.lark.gay/blue-reboot.iso)
 
+The ISO installs Blue Reboot so that the first boot sets up Flathub and
+installs the default Flatpak apps. Afterwards, the installation tracks the
+upstream [Fedora
+Silverblue](https://quay.io/repository/fedora/fedora-silverblue) image, so the
+first OS update switches it to stock Silverblue. Your Flatpak apps and the
+Flathub remote stay installed, but the rest of the changes listed above go
+away. For example, the Firefox RPM comes back, and GNOME Software no longer
+prefers Flatpak over RPM.
+
+To stay on Blue Reboot instead, follow the [Rebase](#rebase) instructions
+below.
+
 ## Rebase
 
 These are instructions for rebasing an existing Fedora Atomic installation to
